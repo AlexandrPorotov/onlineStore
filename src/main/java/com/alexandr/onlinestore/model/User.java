@@ -48,4 +48,10 @@ public class User {
     @JoinColumn(name = "address_id")
     private Address userAddress;
 
+    @Column(name="user_role")
+    @Enumerated(EnumType.STRING)
+    private Role userRole;
+
+    public User() {
+    }
 }
