@@ -1,5 +1,6 @@
 package com.alexandr.onlinestore.security;
 
+import com.alexandr.onlinestore.model.Role;
 import com.alexandr.onlinestore.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -18,6 +19,9 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Component
@@ -38,24 +42,28 @@ public class JwtProvider {
         final LocalDateTime now = LocalDateTime.now();
         final Instant accessExpirationInstant = now.plusMinutes(5).atZone(ZoneId.systemDefault()).toInstant();
         final Date accessExpiration = Date.from(accessExpirationInstant);
-        return Jwts.builder()
+        HashSet<Role> roles = new HashSet<>();
+        roles.add(user.getUserRole());
+        final String accessToken = Jwts.builder()
                 .setSubject(user.getUserLogin())
                 .setExpiration(accessExpiration)
                 .signWith(SignatureAlgorithm.HS512, jwtAccessSecret)
-                .claim("roles", user.getUserRole())
+                .claim("roles", roles)
                 .claim("firstName", user.getUserName())
                 .compact();
+        return accessToken;
     }
 
     public String generateRefreshToken(@NonNull User user) {
         final LocalDateTime now = LocalDateTime.now();
         final Instant refreshExpirationInstant = now.plusDays(30).atZone(ZoneId.systemDefault()).toInstant();
         final Date refreshExpiration = Date.from(refreshExpirationInstant);
-        return Jwts.builder()
+        final String refreshToken = Jwts.builder()
                 .setSubject(user.getUserLogin())
                 .setExpiration(refreshExpiration)
                 .signWith(SignatureAlgorithm.HS512, jwtRefreshSecret)
                 .compact();
+        return refreshToken;
     }
 
     public boolean validateAccessToken(@NonNull String token) {
