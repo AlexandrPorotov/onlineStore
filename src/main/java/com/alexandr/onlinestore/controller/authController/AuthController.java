@@ -6,10 +6,8 @@ import com.alexandr.onlinestore.security.RefreshJwtRequest;
 import com.alexandr.onlinestore.service.authService.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.message.AuthException;
 

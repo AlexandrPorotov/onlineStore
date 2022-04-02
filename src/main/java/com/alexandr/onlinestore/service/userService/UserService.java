@@ -11,12 +11,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    /*
-    * покупка заказа (order)
-    * добавление товаров в корзину
-    * просмотр истории заказов
-    * оплата заказа
-    */
+
     private final UserRepository userRepository;
 
     public Optional<User> getByLogin(@NotNull String login){

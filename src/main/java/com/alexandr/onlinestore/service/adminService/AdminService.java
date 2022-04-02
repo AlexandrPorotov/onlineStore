@@ -32,13 +32,13 @@ public class AdminService {
             user.setUserLogin(login);
             user.setUserPassword(password);
             userRepository.save(user);
-            response = "User add. Login - " + user.getUserLogin() + " {id} - " + user.getUserId();
+            response = "User add. [Login - " + user.getUserLogin() + "] [id - " + user.getUserId() + "]";
         } else if (jwtProvider.validateAccessToken(bearer)){
             response = "This user already exist.";
         }
         return new ResponseDTO(response);
     }
-    public void setRole(String role, Long userId) {
+    public ResponseDTO setRole(String role, Long userId) {
         User userFromDB = userRepository.getById(userId);
         if(role.equalsIgnoreCase("user")){
             userFromDB.setUserRole(Role.USER);
@@ -46,5 +46,16 @@ public class AdminService {
             userFromDB.setUserRole(Role.ADMIN);
         }
         userRepository.save(userFromDB);
+        response = "[User - " + userFromDB.getUserLogin() + "] [role - " + userFromDB.getUserRole() + "]";
+        return new ResponseDTO(response);
+    }
+    public ResponseDTO getUserRoleById(Long userId) {
+        User userFromDB = userRepository.getById(userId);
+        if(userFromDB.getUserRole() == null){
+            response = "Role is null";
+        } else {
+        response = "[User login - " + userFromDB.getUserLogin() + "] [Role - " + userFromDB.getUserRole().toString()+ "]";
+        }
+        return new ResponseDTO(response);
     }
 }
