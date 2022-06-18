@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -48,4 +49,10 @@ public class User {
     @JoinColumn(name = "address_id")
     private Address userAddress;
 
+    @Column(name="user_role")
+    @Enumerated(EnumType.STRING)
+    private Role userRole;
+
+    public User() {
+    }
 }
